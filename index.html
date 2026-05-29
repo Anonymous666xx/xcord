@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>xcord</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <div id="authScreen">
+    <div class="auth-box">
+      <div class="auth-logo">💬</div>
+      <h1 class="auth-title">xcord</h1>
+      <p class="auth-sub">Welcome back!</p>
+      <div id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Username" autocomplete="off">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <div class="auth-error" id="authError"></div>
+        <button id="loginBtn">Log In</button>
+        <p class="auth-switch">Need an account? <a href="#" id="showRegister">Register</a></p>
+      </div>
+      <div id="registerForm" style="display:none">
+        <input type="text" id="regUsername" placeholder="Username" autocomplete="off">
+        <input type="password" id="regPassword" placeholder="Password">
+        <input type="password" id="regConfirm" placeholder="Confirm Password">
+        <div class="auth-error" id="regError"></div>
+        <button id="registerBtn">Create Account</button>
+        <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Log In</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="mainApp" style="display:none">
+    <div class="guild-sidebar" id="guildSidebar">
+      <div class="guild-icon active" data-guild="home" title="Home">
+        <div class="guild-home-icon">🏠</div>
+      </div>
+      <div class="guild-divider"></div>
+      <div class="guild-icon" data-guild="general" title="General">
+        <div class="guild-avatar" style="background:#5865f2">G</div>
+      </div>
+      <div class="guild-icon" data-guild="gaming" title="Gaming">
+        <div class="guild-avatar" style="background:#ed4245">🎮</div>
+      </div>
+      <div class="guild-icon" data-guild="music" title="Music">
+        <div class="guild-avatar" style="background:#57f287">🎵</div>
+      </div>
+      <div class="guild-divider"></div>
+      <div class="guild-icon add-guild" id="addGuildBtn" title="Add a Server">
+        <div class="guild-avatar add">+</div>
+      </div>
+    </div>
+
+    <div class="channel-sidebar" id="channelSidebar">
+      <div class="sidebar-header" id="sidebarHeader">
+            <span id="guildName">xcord</span>
+        <span class="dropdown-arrow">▾</span>
+      </div>
+
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Find or start a conversation">
+      </div>
+
+      <div class="channels-container" id="channelsContainer">
+        <div class="channel-category">
+          <span class="category-name">Text Channels</span>
+          <span class="category-add" id="addChannelBtn">+</span>
+        </div>
+        <div class="channel active" data-channel="general">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">general</span>
+        </div>
+        <div class="channel" data-channel="welcome">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">welcome</span>
+        </div>
+        <div class="channel" data-channel="off-topic">
+          <span class="channel-hash">#</span>
+          <span class="channel-name">off-topic</span>
+        </div>
+
+        <div class="channel-category">
+          <span class="category-name">Voice Channels</span>
+        </div>
+        <div class="channel voice-channel" data-channel="voice-general">
+          <span class="channel-hash">🔊</span>
+          <span class="channel-name">General Voice</span>
+        </div>
+      </div>
+
+      <div class="user-footer" id="userFooter">
+        <div class="user-footer-avatar" id="userAvatar">U</div>
+        <div class="user-footer-info">
+          <div class="user-footer-name" id="userFooterName">User</div>
+          <div class="user-footer-status" id="userFooterStatus">Online</div>
+        </div>
+        <div class="user-footer-actions">
+          <button class="user-action-btn" id="friendsBtn" title="Friends">👥</button>
+          <button class="user-action-btn" id="settingsBtn" title="Settings">⚙️</button>
+          <button class="user-action-btn" id="logoutBtn" title="Log Out">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="chat-area" id="chatArea">
+        <div class="chat-header" id="chatHeader">
+          <div class="chat-header-left">
+            <span class="chat-header-hash">#</span>
+            <span class="chat-header-name" id="channelName">general</span>
+          </div>
+          <div class="chat-header-right">
+            <button class="header-btn" id="callBtn" title="Start Voice Call">📞</button>
+            <button class="header-btn" id="videoCallBtn" title="Start Video Call">📹</button>
+            <button class="header-btn" id="screenshareBtn" title="Share Screen">🖥️</button>
+          </div>
+        </div>
+
+        <div class="messages-container" id="messagesContainer">
+          <div class="messages" id="messages"></div>
+        </div>
+
+        <div class="message-input-area">
+          <div class="message-input-wrapper">
+            <input type="text" id="messageInput" placeholder="Message #general" autocomplete="off">
+            <button class="send-btn" id="sendBtn">➤</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="call-overlay" id="callOverlay" style="display:none">
+        <div class="call-videos">
+          <video id="remoteVideo" autoplay playsinline></video>
+          <video id="localVideo" autoplay playsinline muted></video>
+          <div class="call-status" id="callStatus">Connecting...</div>
+        </div>
+        <div class="call-controls">
+          <button class="call-control-btn mute-btn" id="muteBtn" title="Mute">🎤</button>
+          <button class="call-control-btn deafen-btn" id="deafenBtn" title="Deafen">🔇</button>
+          <button class="call-control-btn video-toggle-btn" id="videoToggleBtn" title="Stop Video">📹</button>
+          <button class="call-control-btn screenshare-toggle-btn" id="screenToggleBtn" title="Share Screen">🖥️</button>
+          <button class="call-control-btn end-call-btn" id="endCallBtn" title="End Call">📞</button>
+        </div>
+        <div class="call-connection-info" id="callConnectionInfo"></div>
+      </div>
+    </div>
+
+    <div class="user-sidebar" id="userSidebar">
+      <div class="user-sidebar-header">
+        <input type="text" class="user-sidebar-search" placeholder="Search" id="friendSearch">
+      </div>
+      <div class="user-sidebar-section">
+        <div class="user-sidebar-section-title">Online — <span id="onlineCount">0</span></div>
+        <div class="online-users" id="onlineUsers"></div>
+      </div>
+      <div class="user-sidebar-section">
+        <div class="user-sidebar-section-title">Friends</div>
+        <div class="friends-list" id="friendsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="friendRequestModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Friend</h3>
+      <button class="modal-close" id="closeFriendModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc">You can add a friend with their xcord username.</p>
+      <input type="text" class="modal-input" id="friendRequestInput" placeholder="Enter a username...">
+      <div class="modal-error" id="friendRequestError"></div>
+      <button class="modal-btn" id="sendFriendRequestBtn">Send Friend Request</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pendingRequestsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Pending Friend Requests</h3>
+      <button class="modal-close" id="closePendingModal">✕</button>
+    </div>
+    <div class="modal-body" id="pendingRequestsList">
+      <p class="modal-desc">No pending requests.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3>Settings</h3>
+      <button class="modal-close" id="closeSettingsModal">✕</button>
+    </div>
+    <div class="modal-body settings-body">
+      <div class="settings-section">
+        <h4>Profile</h4>
+        <label>Display Name</label>
+        <input type="text" class="modal-input" id="settingsDisplayName" placeholder="Display Name">
+        <label>About Me</label>
+        <textarea class="modal-textarea" id="settingsBio" placeholder="Tell us about yourself..." rows="3"></textarea>
+        <button class="modal-btn" id="saveProfileBtn">Save Changes</button>
+      </div>
+      <div class="settings-section">
+        <h4>Voice & Video</h4>
+        <label>Input Device</label>
+        <select class="modal-input" id="audioInputSelect"></select>
+        <label>Output Device</label>
+        <select class="modal-input" id="audioOutputSelect"></select>
+        <label>Camera</label>
+        <select class="modal-input" id="videoInputSelect"></select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="notification-container" id="notificationContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
