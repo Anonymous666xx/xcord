@@ -34,60 +34,44 @@
   </div>
 
   <div id="mainApp" style="display:none">
-    <div class="guild-sidebar" id="guildSidebar">
-      <div class="guild-icon active" data-guild="home" title="Home">
-        <div class="guild-home-icon">🏠</div>
-      </div>
-      <div class="guild-divider"></div>
-      <div class="guild-icon" data-guild="general" title="General">
-        <div class="guild-avatar" style="background:#5865f2">G</div>
-      </div>
-      <div class="guild-icon" data-guild="gaming" title="Gaming">
-        <div class="guild-avatar" style="background:#ed4245">🎮</div>
-      </div>
-      <div class="guild-icon" data-guild="music" title="Music">
-        <div class="guild-avatar" style="background:#57f287">🎵</div>
-      </div>
-      <div class="guild-divider"></div>
-      <div class="guild-icon add-guild" id="addGuildBtn" title="Add a Server">
-        <div class="guild-avatar add">+</div>
-      </div>
-    </div>
-
-    <div class="channel-sidebar" id="channelSidebar">
+    <div class="left-sidebar" id="leftSidebar">
       <div class="sidebar-header" id="sidebarHeader">
-            <span id="guildName">xcord</span>
-        <span class="dropdown-arrow">▾</span>
+        <img src="logo.png" alt="" class="sidebar-logo">
+        <span id="appName">xcord</span>
       </div>
 
       <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Find or start a conversation">
       </div>
 
-      <div class="channels-container" id="channelsContainer">
-        <div class="channel-category">
-          <span class="category-name">Text Channels</span>
-          <span class="category-add" id="addChannelBtn">+</span>
-        </div>
-        <div class="channel active" data-channel="general">
-          <span class="channel-hash">#</span>
-          <span class="channel-name">general</span>
-        </div>
-        <div class="channel" data-channel="welcome">
-          <span class="channel-hash">#</span>
-          <span class="channel-name">welcome</span>
-        </div>
-        <div class="channel" data-channel="off-topic">
-          <span class="channel-hash">#</span>
-          <span class="channel-name">off-topic</span>
+      <div class="sidebar-sections">
+        <div class="sidebar-section">
+          <div class="sidebar-section-header">
+            <span class="sidebar-section-title">Friends</span>
+            <span class="sidebar-section-action" id="addFriendBtn" title="Add Friend">+</span>
+          </div>
+          <div class="sidebar-section-list" id="friendsListSidebar"></div>
         </div>
 
-        <div class="channel-category">
-          <span class="category-name">Voice Channels</span>
-        </div>
-        <div class="channel voice-channel" data-channel="voice-general">
-          <span class="channel-hash">🔊</span>
-          <span class="channel-name">General Voice</span>
+        <div class="sidebar-section">
+          <div class="sidebar-section-header">
+            <span class="sidebar-section-title">Groups</span>
+            <span class="sidebar-section-action" id="addGroupBtn" title="Create Group">+</span>
+          </div>
+          <div class="sidebar-section-list" id="groupsListSidebar">
+            <div class="sidebar-item active" data-channel="general">
+              <span class="sidebar-item-icon">#</span>
+              <span class="sidebar-item-name">general</span>
+            </div>
+            <div class="sidebar-item" data-channel="welcome">
+              <span class="sidebar-item-icon">#</span>
+              <span class="sidebar-item-name">welcome</span>
+            </div>
+            <div class="sidebar-item" data-channel="off-topic">
+              <span class="sidebar-item-icon">#</span>
+              <span class="sidebar-item-name">off-topic</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -98,7 +82,8 @@
           <div class="user-footer-status" id="userFooterStatus">Online</div>
         </div>
         <div class="user-footer-actions">
-          <button class="user-action-btn" id="friendsBtn" title="Friends">👥</button>
+          <button class="user-action-btn" id="friendsBtn" title="Friend Requests">👥</button>
+          <button class="user-action-btn" id="pendingBtn" title="Pending Requests">📨</button>
           <button class="user-action-btn" id="settingsBtn" title="Settings">⚙️</button>
           <button class="user-action-btn" id="logoutBtn" title="Log Out">✕</button>
         </div>
