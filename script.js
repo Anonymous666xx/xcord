@@ -168,7 +168,7 @@ if (state.token) {
 function loadUserData() {
   if (!state.user) return;
   qs('userFooterName').textContent = state.user.displayName || state.user.username;
-  qs('userAvatar').textContent = (state.user.displayName || state.user.username)[0].toUpperCase();
+  qs('userAvatar').innerHTML = '<img src="' + generateIdenticon(state.user.username, 32) + '" alt="" style="width:32px;height:32px;border-radius:50%">';
   qs('settingsDisplayName').value = state.user.displayName || '';
   qs('settingsBio').value = state.user.bio || '';
 }
@@ -261,9 +261,7 @@ function appendMessage(m) {
   var container = qs('messages');
   var el = document.createElement('div');
   el.className = 'message';
-  var avatarColor = stringToColor(m.author);
-  el.innerHTML = '<div class="message-avatar" style="background:' + avatarColor + '">'
-    + m.author[0].toUpperCase() + '</div>'
+  el.innerHTML = '<img class="message-avatar" src="' + generateIdenticon(m.author, 36) + '" alt="">'
     + '<div class="message-content"><div class="message-header">'
     + '<span class="message-author">' + escapeHtml(m.author) + '</span>'
     + '<span class="message-time">' + formatTime(m.timestamp || Date.now()) + '</span></div>'
@@ -318,7 +316,7 @@ function renderFriends() {
   list.innerHTML = state.friends.map(function(f) {
     var name = f.displayName || f.username;
     return '<div class="friend-item">'
-      + '<div class="friend-avatar" style="background:' + stringToColor(name) + '">' + name[0].toUpperCase() + '</div>'
+      + '<img class="friend-avatar" src="' + generateIdenticon(name, 28) + '" alt="">'
       + '<div class="friend-info"><div class="friend-name">' + escapeHtml(name) + '</div>'
       + '<div class="friend-status">' + (state.onlineUsers[f.id] ? 'Online' : 'Offline') + '</div></div>'
       + '<div class="friend-actions">'
@@ -355,7 +353,7 @@ function showPendingRequests() {
     list.innerHTML = state.friendRequests.map(function(r) {
       var name = r.displayName || r.username;
       return '<div class="pending-request-item">'
-        + '<div class="pending-request-avatar" style="background:' + stringToColor(name) + '">' + name[0].toUpperCase() + '</div>'
+        + '<img class="pending-request-avatar" src="' + generateIdenticon(name, 32) + '" alt="">'
         + '<span class="pending-request-name">' + escapeHtml(name) + '</span>'
         + '<div class="pending-request-actions">'
         + '<button class="pending-accept-btn" data-id="' + r.id + '">Accept</button>'
@@ -429,7 +427,7 @@ function renderOnlineUsers() {
   container.innerHTML = ids.map(function(id) {
     var name = state.onlineUsers[id];
     return '<div class="online-user">'
-      + '<div class="online-user-avatar" style="background:' + stringToColor(name) + '">' + name[0].toUpperCase() + '</div>'
+      + '<img class="online-user-avatar" src="' + generateIdenticon(name, 28) + '" alt="">'
       + '<span class="online-user-name">' + escapeHtml(name) + '</span></div>';
   }).join('');
 }
@@ -753,6 +751,32 @@ function formatTime(ts) {
 function stringToColor(str) {
   var hash = 0;
   for (var i = 0; i < str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
-  var colors = ['#5865f2','#ed4245','#57f287','#fee75c','#eb459e','#00b0f4','#9b59b6','#1abc9c','#e67e22','#2ecc71'];
+  var colors = ['#00f0ff','#a855f7','#ff00aa','#f59e0b','#23a55a','#ed4245','#5865f2','#1abc9c','#e67e22','#2ecc71'];
   return colors[Math.abs(hash) % colors.length];
+}
+
+function generateIdenticon(str, size) {
+  size = size || 40;
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) { hash = ((hash << 5) - hash) + str.charCodeAt(i); hash |= 0; }
+  var color = stringToColor(str);
+  var bg = ['#0a0a18','#08081a','#05050f','#0d0d20','#060612'][Math.abs(hash >> 16) % 5];
+  var grid = 5;
+  var cell = size / grid;
+  var w = size, h = size;
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '"><rect width="' + w + '" height="' + h + '" fill="' + bg + '"/>';
+  var seed = Math.abs(hash);
+  for (var x = 0; x < Math.ceil(grid / 2); x++) {
+    for (var y = 0; y < grid; y++) {
+      var bit = (seed >> ((x + y * 3) % 30)) & 1;
+      if (bit) {
+        var rx = x * cell, ry = y * cell;
+        svg += '<rect x="' + rx + '" y="' + ry + '" width="' + cell + '" height="' + cell + '" fill="' + color + '" opacity="0.8"/>';
+        var mx = (grid - 1 - x) * cell;
+        if (mx !== rx) svg += '<rect x="' + mx + '" y="' + ry + '" width="' + cell + '" height="' + cell + '" fill="' + color + '" opacity="0.8"/>';
+      }
+    }
+  }
+  svg += '</svg>';
+  return 'data:image/svg+xml;base64,' + btoa(svg);
 }
