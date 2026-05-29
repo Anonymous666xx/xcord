@@ -451,14 +451,9 @@ body::after {
 .message-avatar {
   width: 36px; height: 36px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.85rem;
   flex-shrink: 0;
   margin-top: 0.25rem;
+  object-fit: cover;
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.08);
 }
 
@@ -689,25 +684,33 @@ body::after {
 .online-user-avatar {
   width: 28px; height: 28px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.7rem;
   flex-shrink: 0;
+  object-fit: cover;
+}
+
+.online-user:hover { background: rgba(0, 240, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.06); }
+
+.online-user {
   position: relative;
 }
 
-.online-user-avatar::after {
+.online-user-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.online-user::after {
   content: '';
   position: absolute;
-  bottom: -2px; right: -2px;
+  bottom: 2px; left: 22px;
   width: 10px; height: 10px;
   border-radius: 50%;
   background: var(--status-online);
   border: 2px solid var(--bg-secondary);
   box-shadow: 0 0 6px rgba(35, 165, 90, 0.5);
+  z-index: 1;
 }
 
 .online-user-name {
@@ -734,13 +737,8 @@ body::after {
 .friend-avatar {
   width: 28px; height: 28px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.7rem;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .friend-info { flex: 1; min-width: 0; }
@@ -955,11 +953,7 @@ body::after {
 .pending-request-avatar {
   width: 32px; height: 32px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
+  object-fit: cover;
 }
 
 .pending-request-name { flex: 1; font-weight: 600; font-size: 0.9rem; color: var(--text-normal); }
