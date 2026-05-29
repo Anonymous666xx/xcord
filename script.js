@@ -224,9 +224,9 @@ function handleWSMessage(msg) {
 }
 
 // ===================== CHANNELS =====================
-qsa('.channel').forEach(function(el) {
+qsa('.sidebar-item').forEach(function(el) {
   el.addEventListener('click', function() {
-    qsa('.channel').forEach(function(c) { c.classList.remove('active'); });
+    qsa('.sidebar-item').forEach(function(c) { c.classList.remove('active'); });
     el.classList.add('active');
     state.activeChannel = el.dataset.channel;
     qs('channelName').textContent = state.activeChannel;
@@ -235,18 +235,7 @@ qsa('.channel').forEach(function(el) {
   });
 });
 
-qsa('.guild-icon').forEach(function(el) {
-  el.addEventListener('click', function() {
-    qsa('.guild-icon').forEach(function(g) { g.classList.remove('active'); });
-    el.classList.add('active');
-    state.activeGuild = el.dataset.guild;
-    if (state.activeGuild === 'home') {
-      qs('guildName').textContent = 'xcord';
-    } else {
-      qs('guildName').textContent = state.activeGuild.charAt(0).toUpperCase() + state.activeGuild.slice(1);
-    }
-  });
-});
+
 
 // ===================== MESSAGES =====================
 async function loadMessages(channel) {
@@ -446,11 +435,14 @@ function renderOnlineUsers() {
 }
 
 // ===================== FRIEND REQUEST MODAL =====================
-qs('friendsBtn').addEventListener('click', function() {
+function openFriendModal() {
   var modal = qs('friendRequestModal');
   modal.classList.add('active');
   qs('friendRequestInput').focus();
-});
+}
+
+qs('addFriendBtn').addEventListener('click', openFriendModal);
+qs('friendsBtn').addEventListener('click', openFriendModal);
 
 qs('closeFriendModal').addEventListener('click', function() {
   qs('friendRequestModal').classList.remove('active');
@@ -470,10 +462,8 @@ qs('friendRequestInput').addEventListener('keydown', function(e) {
   }
 });
 
-// Show pending requests on right-click or via another trigger
-// Let's add a little "pending" indicator next to the friends button
-// For now, double-click opens pending requests
-qs('friendsBtn').addEventListener('dblclick', function() {
+// Pending requests
+qs('pendingBtn').addEventListener('click', function() {
   loadPendingRequests();
   showPendingRequests();
 });
