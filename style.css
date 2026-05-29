@@ -62,7 +62,8 @@ body {
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.auth-logo { text-align: center; font-size: 3rem; margin-bottom: 0.5rem; }
+.auth-logo { text-align: center; margin-bottom: 0.5rem; }
+.auth-logo-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
 .auth-title { text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--header-primary); margin-bottom: 0.25rem; }
 .auth-sub { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
 
